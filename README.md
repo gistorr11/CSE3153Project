@@ -4,7 +4,7 @@
 
 1. Run the `FinalProject.sql` file
 
-To connect to the Database
+## To connect to the Database
 
 1. Run the `CreateUser.sql` file.
 
