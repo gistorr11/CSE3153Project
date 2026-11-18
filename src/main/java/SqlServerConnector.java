@@ -7,12 +7,39 @@ public class SqlServerConnector {
 
   private String user = "devuser";
 
-  public void connectToSqlServer() {
+  public Connection connectToSqlServer() {
     try {
       Connection connection = DriverManager.getConnection(connectionString, user, "");
-      System.out.println("Connected to SQL Server");
+      System.out.println("Connected to RPG Database");
+      return connection;
     } catch (SQLException sqlException) {
-      System.err.println("Error: " + sqlException.getMessage());
+      errorPrint(sqlException);
+      return null;
     }
+  }
+
+  public void query(String sql, Connection connection) {
+    try {
+      Statement statement = connection.createStatement();
+      ResultSet result = statement.executeQuery(sql);
+      while (result.next()) {
+        System.out.println(result.getString("username"));
+      }
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  public void endConnection(Connection connection) {
+    try {
+      connection.close();
+      System.out.println("Connection closed...");
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  private void errorPrint(Exception e) {
+    System.err.println("Error: " + e.getMessage());
   }
 }
