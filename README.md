@@ -1,6 +1,6 @@
 # CSE3153Project
 
-##To create Database
+## To create Database
 
 1. Run the `FinalProject.sql` file
 
@@ -16,7 +16,7 @@ To connect to the Database
 
 5. Look under `Server Authentication` and change it to `SQL Server and Windows Authentication mode`
 
-##To run the program
+## To run the program
 
 1. Install `Maven` if you have not already.
 
