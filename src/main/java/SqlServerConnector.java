@@ -18,13 +18,90 @@ public class SqlServerConnector {
     }
   }
 
-  public void query(String sql, Connection connection) {
+  // Get Players
+  public void getPlayers(String sql, Connection connection) {
     try {
       Statement statement = connection.createStatement();
       ResultSet result = statement.executeQuery(sql);
+      System.out.println("\nPlayers in the RPG Game: \n");
+      System.out.println("ID | Username | Level");
       while (result.next()) {
-        System.out.println(result.getString("username"));
+        System.out.println(
+            result.getInt("player_id")
+                + " | "
+                + result.getString("username")
+                + " | "
+                + result.getInt("player_level"));
       }
+      System.out.println();
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  public void createNewPlayer(
+      String sql, Connection connection, String username, String player_class) {
+    try {
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, username);
+      statement.setString(2, player_class);
+      int result = statement.executeUpdate();
+      if (result >= 1) {
+        System.out.println("\nSuccessfully created player!!!");
+      } else {
+        System.out.println("\nFailed to create player");
+      }
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  public void levelUp(String sql, Connection connection, int level_up_by, String username) {
+    try {
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setInt(1, level_up_by);
+      statement.setString(2, username);
+      int result = statement.executeUpdate();
+      if (result >= 1) {
+        System.out.println("\nSuccessfully leveled up by " + level_up_by + "!!!");
+      } else {
+        System.out.println("\nFailed to level up player");
+      }
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  public void deletePlayer(String sql, Connection connection, String username) {
+    try {
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, username);
+      int result = statement.executeUpdate();
+      if (result >= 1) {
+        System.out.println("\nSuccessfully deleted player!!!");
+      } else {
+        System.out.println("\nFailed to delete player");
+      }
+    } catch (SQLException sqlException) {
+      errorPrint(sqlException);
+    }
+  }
+
+  public void getAverageLevels(String sql, Connection connection) {
+    try {
+      Statement statement = connection.createStatement();
+      ResultSet result = statement.executeQuery(sql);
+      System.out.println("\nPlayers in the RPG Game: \n");
+      System.out.println("Class | Total Player(s) | Avg Level");
+      while (result.next()) {
+        System.out.println(
+            result.getString("class_name")
+                + " | "
+                + result.getInt("total_players")
+                + " | "
+                + result.getInt("average_level"));
+      }
+      System.out.println();
     } catch (SQLException sqlException) {
       errorPrint(sqlException);
     }
